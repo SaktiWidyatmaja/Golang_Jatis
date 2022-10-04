@@ -126,7 +126,6 @@ func weather(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Wind Speed: "+fmt.Sprintf("%f", resultWeatherObject.CurrentWeather.Windspeed))
 		fmt.Fprintln(w, "Wind Direction: "+fmt.Sprintf("%f", resultWeatherObject.CurrentWeather.Winddirection))
 	}
-
 }
 
 func main() {
