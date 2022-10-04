@@ -37,7 +37,6 @@ func weather(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, city)
 
 		responseCity, err := http.Get("https://geocoding-api.open-meteo.com/v1/search?count=1&name=" + city)
-
 		if err != nil {
 			fmt.Print(err.Error())
 			os.Exit(1)
