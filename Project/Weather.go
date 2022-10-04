@@ -17,12 +17,17 @@ type Coordinates struct {
 	Latitude  float32 `json:"latitude"`
 }
 
+type CurrentWeather struct {
+	Latitude       float32 `json:latitude`
+	CurrentWeather Weather `json:current_weather`
+}
+
 type Weather struct {
-	Time          int     `json:"Time"`
-	Temperature   float32 `json:"Temperature"`
-	Weathercode   int     `json:"Weathercode"`
-	Windspeed     float32 `json:"Windspeed"`
-	Winddirection int     `json:"Winddirection"`
+	Temperature   float32 `json:"temperature"`
+	Windspeed     float32 `json:"windspeed"`
+	Winddirection int     `json:"winddirection"`
+	Weathercode   int     `json:"weathercode"`
+	Time          int     `json:"time"`
 }
 
 func weather(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +36,7 @@ func weather(w http.ResponseWriter, r *http.Request) {
 
 		// Bagian mengubah kota menjadi koordinat
 		var city = r.FormValue("city")
-		fmt.Println(city)
+		fmt.Fprintln(w, city)
 
 		responseCity, err := http.Get("https://geocoding-api.open-meteo.com/v1/search?count=1&name=" + city)
 
@@ -57,11 +62,11 @@ func weather(w http.ResponseWriter, r *http.Request) {
 		// }
 
 		// Mengambil kondisi cuaca
-		var resultWeatherObject Weather
+		var resultWeatherObject CurrentWeather
 		json.NewDecoder(responseWeather.Body).Decode(&resultWeatherObject)
-
-		fmt.Fprintln(w, resultWeatherObject.Time)
-		fmt.Fprintln(w, "halo!")
+		json.NewDecoder(responseCity.Body).Decode(&resultCoordinatesObject)
+		fmt.Fprintln(w, resultWeatherObject)
+		// fmt.Fprintln(w, resultWeatherObject.Temperature)
 		fmt.Fprintln(w, "halo!")
 		fmt.Fprintln(w, "halo!")
 		fmt.Fprintln(w, "halo!")
